@@ -18,7 +18,7 @@ jobs:
           CI: false
       - name: Deploy to Netlify
         run: |
-          npx netlify-cli deploy --prod --dir=.next \
+          npx netlify-cli deploy --prod --dir=out \
             --message 'Deploy from GitHub Actions'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
