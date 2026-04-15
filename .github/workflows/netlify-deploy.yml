@@ -9,20 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20'
-      - run: npm ci
-      - run: npm run build
+          bun-version: latest
+      - run: bun install
+      - run: bun run build
         env:
           CI: false
-      - uses: nwtgck/actions-netlify@v3
-        with:
-          publish-dir: '.next'
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: 'Deploy from GitHub Actions'
-          netlify-config-path: './netlify.toml'
+      - name: Deploy to Netlify
+        run: |
+          npx netlify-cli deploy --prod --dir=.next \
+            --message 'Deploy from GitHub Actions'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
